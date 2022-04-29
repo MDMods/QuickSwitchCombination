@@ -44,7 +44,7 @@ namespace QuickSwitchCombination
     public static class Save
     {
         private static Config DefaultConfig = new Config(KeyCode.F10, KeyCode.F11, new List<Data> { new Data(KeyCode.F12, "Little Devil", "Lilith") });
-        public static Config Settings { get; set; }
+        internal static Config Settings { get; set; }
 
         public static void Load()
         {

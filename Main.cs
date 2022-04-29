@@ -23,7 +23,7 @@ namespace QuickSwitchCombination
             GameObject gameObject = new GameObject("QuickSwitchCombination");
             Object.DontDestroyOnLoad(gameObject);
             gameObject.AddComponent<Menu>();
-            LoggerInstance.Msg("QuickSwitchCombination loaded");
+            LoggerInstance.Msg("QuickSwitchCombination is loaded");
         }
 
         public override void OnGUI()
@@ -45,6 +45,7 @@ namespace QuickSwitchCombination
                     {
                         string Configs = File.ReadAllText(Path.Combine("UserData", "QuickSwitchCombination.cfg"));
                         Save.Settings = TomletMain.To<Config>(Configs);
+                        LoggerInstance.Msg("Reloaded new settings");
                     }
                     if (InputKey == Save.Settings.MenuKey)
                     {
