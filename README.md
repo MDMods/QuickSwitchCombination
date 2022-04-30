@@ -17,8 +17,11 @@ When you launch the game after putting the dll file into the mods folder, the mo
 ### Example
 If you want to use F12 as shortcut key and with little devil's skill, you should write like this:
 [[datas]]
+
 Key = "F12"
+
 Character = "Little Devil"
+
 Elfin = "Lilith"
 
 (note: the lines with # are comments, you don’t need to care about it)
