@@ -27,8 +27,10 @@ namespace QuickSwitchCombination
 
     public struct Config
     {
+        [TomlPrecedingComment("Reload settings after editing the file")]
         internal KeyCode ReloadKey;
 
+        [TomlPrecedingComment("Menu for adding settings (Still in developing)")]
         internal KeyCode MenuKey;
 
         internal List<Data> datas;

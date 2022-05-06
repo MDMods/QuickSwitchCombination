@@ -28,7 +28,7 @@ Elfin = "Lilith"
 
 ## Be careful about these things
 
-* The language of parameters in txt file must follow your game setting language
+* The language of parameters in quotation marks must follow your game setting language
 * You can have multiple setting, just create a same style of setting after one is finished
 
 ## PS
