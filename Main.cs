@@ -3,8 +3,6 @@ using Assets.Scripts.PeroTools.Managers;
 using Assets.Scripts.PeroTools.Nice.Datas;
 using Assets.Scripts.PeroTools.Nice.Interface;
 using MelonLoader;
-using System.IO;
-using Tomlet;
 using UnityEngine;
 using UnhollowerRuntimeLib;
 
@@ -13,17 +11,28 @@ namespace QuickSwitchCombination
     public class Main : MelonMod
     {
         private static int n = 0;
-
-        private static KeyCode InputKey;
+        private static GameObject gameobject { get; set; }
+        private static KeyCode InputKey { get; set; }
 
         public override void OnApplicationStart()
         {
             Save.Load();
-            ClassInjector.RegisterTypeInIl2Cpp<Menu>();
-            GameObject gameObject = new GameObject("QuickSwitchCombination");
-            Object.DontDestroyOnLoad(gameObject);
-            gameObject.AddComponent<Menu>();
-            LoggerInstance.Msg("QuickSwitchCombination is loaded");
+            LoggerInstance.Msg("QuickSwitchCombination is loaded!");
+        }
+
+        public override void OnSceneWasLoaded(int buildIndex, string sceneName)
+        {
+            if (sceneName == "UISystem_PC")
+            {
+                ClassInjector.RegisterTypeInIl2Cpp<Menu>();
+                gameobject = new GameObject("QuickSwitchCombination");
+                Object.DontDestroyOnLoad(gameobject);
+                gameobject.AddComponent<Menu>();
+            }
+            else
+            {
+                Object.Destroy(gameobject);
+            }
         }
 
         public override void OnGUI()
@@ -40,12 +49,6 @@ namespace QuickSwitchCombination
                         {
                             SetCombination();
                         }
-                    }
-                    if (InputKey == Save.Settings.ReloadKey)
-                    {
-                        string Configs = File.ReadAllText(Path.Combine("UserData", "QuickSwitchCombination.cfg"));
-                        Save.Settings = TomletMain.To<Config>(Configs);
-                        LoggerInstance.Msg("Reloaded new settings");
                     }
                     if (InputKey == Save.Settings.MenuKey)
                     {
@@ -70,6 +73,10 @@ namespace QuickSwitchCombination
                 if (Save.Settings.datas[n].Elfin == Singleton<ConfigManager>.instance.GetJson("elfin", true)[i]["name"].ToObject<string>())
                 {
                     VariableUtils.SetResult(Singleton<DataManager>.instance["Account"]["SelectedElfinIndex"], new Il2CppSystem.Int32() { m_value = i }.BoxIl2CppObject());
+                }
+                if (Save.Settings.datas[n].Elfin == "")
+                {
+                    VariableUtils.SetResult(Singleton<DataManager>.instance["Account"]["SelectedElfinIndex"], new Il2CppSystem.Int32() { m_value = -1 }.BoxIl2CppObject());
                 }
             }
         }

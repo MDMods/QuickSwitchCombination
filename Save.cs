@@ -27,17 +27,13 @@ namespace QuickSwitchCombination
 
     public struct Config
     {
-        [TomlPrecedingComment("Reload settings after editing the file")]
-        internal KeyCode ReloadKey;
-
         [TomlPrecedingComment("Menu for adding settings (Still in developing)")]
         internal KeyCode MenuKey;
 
         internal List<Data> datas;
 
-        public Config(KeyCode reloadkey, KeyCode menukey, List<Data> data)
+        public Config(KeyCode menukey, List<Data> data)
         {
-            ReloadKey = reloadkey;
             MenuKey = menukey;
             datas = data;
         }
@@ -45,10 +41,10 @@ namespace QuickSwitchCombination
 
     public static class Save
     {
-        private static Config DefaultConfig = new Config(KeyCode.F10, KeyCode.F11, new List<Data> { new Data(KeyCode.F12, "Little Devil", "Lilith") });
+        private static Config DefaultConfig = new Config(KeyCode.F11, new List<Data> { new Data(KeyCode.F12, "Little Devil", "Lilith") });
         internal static Config Settings { get; set; }
 
-        public static void Load()
+        internal static void Load()
         {
             if (!File.Exists(Path.Combine("UserData", "QuickSwitchCombination.cfg")))
             {
