@@ -4,6 +4,12 @@ using Tomlet;
 using Tomlet.Attributes;
 using UnityEngine;
 
+namespace System.Runtime.CompilerServices
+{
+    internal static class IsExternalInit
+    { }
+}
+
 namespace QuickSwitchCombination
 {
     public struct Data
@@ -28,9 +34,13 @@ namespace QuickSwitchCombination
     public struct Config
     {
         [TomlPrecedingComment("Menu for adding settings (Still in developing)")]
-        internal KeyCode MenuKey;
+        internal KeyCode MenuKey = KeyCode.F11;
 
-        internal List<Data> datas;
+        internal List<Data> datas { get; init; } = new() { new Data(KeyCode.F12, "Little Devil", "Lilith") };
+
+        public Config()
+        {
+        }
 
         public Config(KeyCode menukey, List<Data> data)
         {
@@ -41,7 +51,7 @@ namespace QuickSwitchCombination
 
     public static class Save
     {
-        private static Config DefaultConfig = new Config(KeyCode.F11, new List<Data> { new Data(KeyCode.F12, "Little Devil", "Lilith") });
+        private static Config DefaultConfig = new();
         internal static Config Settings { get; set; }
 
         internal static void Load()

@@ -10,8 +10,6 @@ using MelonLoader;
 using System.IO;
 using Tomlet;
 using UnityEngine.UI;
-using UniverseLib.UI;
-using UniverseLib.UI.Models;
 
 namespace QuickSwitchCombination
 {

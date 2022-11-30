@@ -14,7 +14,7 @@ namespace QuickSwitchCombination
         private static GameObject gameobject { get; set; }
         private static KeyCode InputKey { get; set; }
 
-        public override void OnApplicationStart()
+        public override void OnInitializeMelon()
         {
             Save.Load();
             LoggerInstance.Msg("QuickSwitchCombination is loaded!");
