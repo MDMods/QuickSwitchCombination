@@ -4,7 +4,7 @@ Allow you to use shortcut key to switch your character and elfin.
 [中文Readme](https://github.com/MDModsDev/QuickSwitchCombination/blob/master/README.zh.md)
 
 ## How to install
-Install [MelonLoader](https://github.com/HerpDerpinstine/MelonLoader/releases/latest/download/MelonLoader.Installer.exe) then put the QuickSwitchCombination.dll (You can download it [here](https://github.com/MDModsDev/QuickSwitchCombination/releases)) into the mods folder
+Install [MelonLoader](https://github.com/HerpDerpinstine/MelonLoader/releases/latest/download/MelonLoader.Installer.exe) then put the QuickSwitchCombination.dll (You can download it [here](https://github.com/MDModsDev/QuickSwitchCombination/releases/latest)) into the mods folder
 
 ## How to use
 When you launch the game after putting the dll file into the mods folder, the mod will automatically generate a QuickSwitchCombination.cfg in the MuseDash\UserData folder

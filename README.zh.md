@@ -4,7 +4,7 @@
 
 ## 如何安装
 
-安装[MelonLoader](https://github.com/HerpDerpinstine/MelonLoader/releases/latest/download/MelonLoader.Installer.exe)，然后把QuickSwitchCombination.dll（你可以在[这里](https://github.com/MDModsDev/QuickSwitchCombination/releases)下载）放到mods文件夹底下
+安装[MelonLoader](https://github.com/HerpDerpinstine/MelonLoader/releases/latest/download/MelonLoader.Installer.exe)，然后把QuickSwitchCombination.dll（你可以在[这里](https://github.com/MDModsDev/QuickSwitchCombination/releases/latest)下载）放到mods文件夹底下
 
 ## 如何使用
 
