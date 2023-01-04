@@ -33,7 +33,7 @@ namespace QuickSwitchCombination
 
     public struct Config
     {
-        [TomlPrecedingComment("Menu for adding settings (Still in developing)")]
+        [TomlPrecedingComment("Menu for adding settings")]
         internal KeyCode MenuKey = KeyCode.F11;
 
         internal List<Data> datas { get; init; } = new() { new Data(KeyCode.F12, 11, 7) };

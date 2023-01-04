@@ -12,6 +12,7 @@ When you launch the game after putting the dll file into the mods folder, the mo
 * The default menu key is F11
 * After pressing the menu key on the main scene, select character with the first dropdown, and elfin with second dropdown
 * Pressing the third button and input the key you want to use for shortcut
+* If it's hard for you to memorize the key, press the fourth select switch button to switch
 
 ## PS
 

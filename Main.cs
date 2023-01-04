@@ -16,7 +16,7 @@ namespace QuickSwitchCombination
         internal static int ClickIndex { get; set; } = 0;
         internal static bool SetKey { get; set; } = false;
 
-        public override void OnInitializeMelon()
+        public override void OnApplicationStart()
         {
             Save.Load();
             LoggerInstance.Msg("QuickSwitchCombination is loaded!");

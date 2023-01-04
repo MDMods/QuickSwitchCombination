@@ -9,12 +9,11 @@ namespace QuickSwitchCombination
     internal class Menu : MonoBehaviour
     {
         internal static AssetBundle ab { get; set; }
+        internal static bool ShowMenu { get; set; } = false;
 
         public Menu(IntPtr intPtr) : base(intPtr)
         {
         }
-
-        public static bool ShowMenu = false;
 
         private void Start()
         {
@@ -72,29 +71,32 @@ namespace QuickSwitchCombination
             ClassInjector.RegisterTypeInIl2Cpp<Plus>();
             ConstantVariables.Plus.AddComponent<Plus>();
 
-            SetCombination();
-        }
-
-        internal static void SetCombination()
-        {
             for (int i = 0; i < Save.Settings.datas.Count; i++)
             {
-                var combination = Instantiate(ab.LoadAsset("Assets/Combination.prefab").Cast<GameObject>(), ConstantVariables.ContentTransform);
-
-                ClassInjector.RegisterTypeInIl2Cpp<Count>();
-                combination.AddComponent<Count>();
-                combination.GetComponent<Count>().count = i;
-
-                ClassInjector.RegisterTypeInIl2Cpp<Character>();
-                combination.transform.GetChild(0).gameObject.AddComponent<Character>();
-
-                ClassInjector.RegisterTypeInIl2Cpp<Elfin>();
-                combination.transform.GetChild(1).gameObject.AddComponent<Elfin>();
-
-                ClassInjector.RegisterTypeInIl2Cpp<Key>();
-                combination.transform.GetChild(2).gameObject.AddComponent<Key>();
-                combination.transform.GetChild(2).GetChild(0).gameObject.GetComponent<Text>().text = Save.Settings.datas[i].Key.ToString();
+                SetCombination(i);
             }
+        }
+
+        internal static void SetCombination(int count)
+        {
+            var combination = Instantiate(ab.LoadAsset("Assets/Combination.prefab").Cast<GameObject>(), ConstantVariables.ContentTransform);
+
+            ClassInjector.RegisterTypeInIl2Cpp<Count>();
+            combination.AddComponent<Count>();
+            combination.GetComponent<Count>().count = count;
+
+            ClassInjector.RegisterTypeInIl2Cpp<Character>();
+            combination.transform.GetChild(0).gameObject.AddComponent<Character>();
+
+            ClassInjector.RegisterTypeInIl2Cpp<Elfin>();
+            combination.transform.GetChild(1).gameObject.AddComponent<Elfin>();
+
+            ClassInjector.RegisterTypeInIl2Cpp<Key>();
+            combination.transform.GetChild(2).gameObject.AddComponent<Key>();
+            combination.transform.GetChild(2).GetChild(0).gameObject.GetComponent<Text>().text = Save.Settings.datas[count].Key.ToString();
+
+            ClassInjector.RegisterTypeInIl2Cpp<Select>();
+            combination.transform.GetChild(3).gameObject.AddComponent<Select>();
         }
     }
 }

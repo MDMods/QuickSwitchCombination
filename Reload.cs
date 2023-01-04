@@ -28,7 +28,10 @@ namespace QuickSwitchCombination
                 Destroy(ConstantVariables.ContentTransform.GetChild(i).gameObject);
             }
 
-            Menu.SetCombination();
+            for (int i = 0; i < Save.Settings.datas.Count; i++)
+            {
+                Menu.SetCombination(i);
+            }
         }
     }
 }
