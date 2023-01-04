@@ -17,13 +17,13 @@ namespace QuickSwitchCombination
         [TomlPrecedingComment("The shortcut key for switching character")]
         internal KeyCode Key;
 
-        [TomlPrecedingComment("The character you want to switch")]
-        internal string Character;
+        [TomlPrecedingComment("The character index")]
+        internal int Character;
 
-        [TomlPrecedingComment("The elfin you want to switch")]
-        internal string Elfin;
+        [TomlPrecedingComment("The elfin index")]
+        internal int Elfin;
 
-        public Data(KeyCode key, string character, string elfin)
+        public Data(KeyCode key, int character, int elfin)
         {
             Key = key;
             Character = character;
@@ -36,7 +36,7 @@ namespace QuickSwitchCombination
         [TomlPrecedingComment("Menu for adding settings (Still in developing)")]
         internal KeyCode MenuKey = KeyCode.F11;
 
-        internal List<Data> datas { get; init; } = new() { new Data(KeyCode.F12, "Little Devil", "Lilith") };
+        internal List<Data> datas { get; init; } = new() { new Data(KeyCode.F12, 11, 7) };
 
         public Config()
         {

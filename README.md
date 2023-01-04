@@ -9,27 +9,9 @@ Install [MelonLoader](https://github.com/HerpDerpinstine/MelonLoader/releases/la
 ## How to use
 When you launch the game after putting the dll file into the mods folder, the mod will automatically generate a QuickSwitchCombination.cfg in the MuseDash\UserData folder
 
-* The default reload key is F10
-* The default menu key is F11 (still in developing)
-* The first parameter is for shortcut key
-* The second parameter is for character skill
-* The third parameter is for elfin
-### Example
-If you want to use F12 as shortcut key and with little devil's skill, you should write like this:
-[[datas]]
-
-Key = "F12"
-
-Character = "Little Devil"
-
-Elfin = "Lilith"
-
-(note: the lines with # are comments, you don’t need to care about it)
-
-## Be careful about these things
-
-* The language of parameters in quotation marks must follow your game setting language
-* You can have multiple setting, just create a same style of setting after one is finished
+* The default menu key is F11
+* After pressing the menu key on the main scene, select character with the first dropdown, and elfin with second dropdown
+* Pressing the third button and input the key you want to use for shortcut
 
 ## PS
 

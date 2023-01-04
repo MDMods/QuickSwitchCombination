@@ -1,22 +1,14 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Reflection;
+using UnhollowerRuntimeLib;
 using UnityEngine;
-using Assets.Scripts.PeroTools.Managers;
-using Assets.Scripts.PeroTools.Commons;
-using MelonLoader;
-using System.IO;
-using Tomlet;
 using UnityEngine.UI;
 
 namespace QuickSwitchCombination
 {
-    public class Menu : MonoBehaviour
+    internal class Menu : MonoBehaviour
     {
-        private static Dropdown CharacterDP = new Dropdown();
-        private GameObject UI;
+        internal static AssetBundle ab { get; set; }
 
         public Menu(IntPtr intPtr) : base(intPtr)
         {
@@ -26,71 +18,83 @@ namespace QuickSwitchCombination
 
         private void Start()
         {
-            MelonLogger.Msg("Menu loaded");
+            if (ab == null)
+            {
+                ab = AssetBundle.LoadFromMemory(ReadEmbeddedFile("Menu.bundle"));
+                LoadGameObjects();
+                SetMenu();
+            }
+            else
+            {
+                LoadGameObjects();
+                SetMenu();
+            }
         }
 
-        /*private void Update()
-        {
-            UI = UIFactory.CreateUIObject("SceneExplorer", );
-            UIFactory.SetLayoutGroup<VerticalLayoutGroup>(uiRoot, true, true, true, true, 0, 2, 2, 2, 2);
-            UIFactory.SetLayoutElement(uiRoot, flexibleHeight: 9999);
-        }*/
-
-        /*private void OnGUI()
+        private void Update()
         {
             if (ShowMenu)
             {
-                GUI.Box(new Rect(Screen.width - 460, 0, 460, Screen.height), "QuickSwitchCombination");
-                GameObject gameObject = new GameObject();
-                UIFactory.CreateLabel(gameObject, "character", "Character");
-                GUI.Label(new Rect(Screen.width - 390, 80, 100, 20), "Character");
-                GUI.Label(new Rect(Screen.width - 240, 80, 100, 20), "Elfin");
-                GUI.Label(new Rect(Screen.width - 120, 80, 100, 20), "Key");
-
-                //if click reload button then reloading all settings
-                if (GUI.Button(new Rect(Screen.width - 160, 40, 100, 20), "Reload"))
-                {
-                    string Configs = File.ReadAllText(Path.Combine("UserData", "QuickSwitchCombination.cfg"));
-                    Save.Settings = TomletMain.To<Config>(Configs);
-                    MelonLogger.Msg("Reloaded new settings");
-                }
-
-                //if click + button then add one more line of dropdowns to the box
-                if (GUI.Button(new Rect(Screen.width - 400, 40, 100, 20), "+"))
-                {
-                }
-                for (int i = 0; i < Save.Settings.datas.Count; i++)
-                {
-                }
-                /*if (GUI.Button(new Rect(Screen.width - 200, 60, 200, 20), "Default"))
-                {
-                    Main.CharacterSkill = -1;
-                }
-                for (int i = 0; i < Singleton<ConfigManager>.instance["character"].Count; i++)
-                {
-                    if (GUI.Button(new Rect(Screen.width - 200, i * 30 + 90, 200, 20), Singleton<ConfigManager>.instance.GetJson("character", true)[i]["cosName"].ToObject<string>()))
-                    {
-                        Main.CharacterSkill = i;
-                    }
-                }
-                GUI.Label(new Rect(Screen.width - 450, 30, 200, 20), "Elfin Skill: " + Main.ElfinSkill.ToString());
-                if (GUI.Button(new Rect(Screen.width - 450, 60, 200, 20), "Default"))
-                {
-                    Main.ElfinSkill = -1;
-                }
-                for (int i = 0; i < Singleton<ConfigManager>.instance["elfin"].Count; i++)
-                {
-                    if (GUI.Button(new Rect(Screen.width - 450, i * 30 + 90, 200, 20), Singleton<ConfigManager>.instance.GetJson("elfin", true)[i]["name"].ToObject<string>()))
-                    {
-                        Main.ElfinSkill = i;
-                    }
-                }
+                ConstantVariables.MenuPrefab.SetActive(true);
             }
-        }*/
+            else
+            {
+                ConstantVariables.MenuPrefab.SetActive(false);
+            }
+        }
 
-        /*private Dropdown CreateDropDown(string name,)
+        private static byte[] ReadEmbeddedFile(string file)
         {
-            return
-        }*/
+            var assembly = Assembly.GetExecutingAssembly();
+            byte[] buffer;
+            using (var stream = assembly.GetManifestResourceStream($"{Assembly.GetExecutingAssembly().GetName().Name}.{file}"))
+            {
+                buffer = new byte[stream.Length];
+                stream.Read(buffer, 0, buffer.Length);
+            }
+            return buffer;
+        }
+
+        private static void LoadGameObjects()
+        {
+            ConstantVariables.MenuPrefab = Instantiate(ab.LoadAsset("Assets/Menu Canvas.prefab").Cast<GameObject>());
+            ConstantVariables.MenuPrefab.SetActive(false);
+            ConstantVariables.Reload = ConstantVariables.MenuPrefab.transform.GetChild(0).FindChild("Reload").gameObject;
+            ConstantVariables.Plus = ConstantVariables.MenuPrefab.transform.GetChild(0).FindChild("Plus").gameObject;
+            ConstantVariables.ContentTransform = ConstantVariables.MenuPrefab.transform.GetChild(0).FindChild("Scroll View").GetChild(0).GetChild(0);
+        }
+
+        private static void SetMenu()
+        {
+            ClassInjector.RegisterTypeInIl2Cpp<Reload>();
+            ConstantVariables.Reload.AddComponent<Reload>();
+
+            ClassInjector.RegisterTypeInIl2Cpp<Plus>();
+            ConstantVariables.Plus.AddComponent<Plus>();
+
+            SetCombination();
+        }
+
+        internal static void SetCombination()
+        {
+            for (int i = 0; i < Save.Settings.datas.Count; i++)
+            {
+                var combination = Instantiate(ab.LoadAsset("Assets/Combination.prefab").Cast<GameObject>(), ConstantVariables.ContentTransform);
+
+                ClassInjector.RegisterTypeInIl2Cpp<Count>();
+                combination.AddComponent<Count>();
+                combination.GetComponent<Count>().count = i;
+
+                ClassInjector.RegisterTypeInIl2Cpp<Character>();
+                combination.transform.GetChild(0).gameObject.AddComponent<Character>();
+
+                ClassInjector.RegisterTypeInIl2Cpp<Elfin>();
+                combination.transform.GetChild(1).gameObject.AddComponent<Elfin>();
+
+                ClassInjector.RegisterTypeInIl2Cpp<Key>();
+                combination.transform.GetChild(2).gameObject.AddComponent<Key>();
+                combination.transform.GetChild(2).GetChild(0).gameObject.GetComponent<Text>().text = Save.Settings.datas[i].Key.ToString();
+            }
+        }
     }
 }

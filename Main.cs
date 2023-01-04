@@ -1,23 +1,30 @@
 ﻿using Assets.Scripts.PeroTools.Commons;
-using Assets.Scripts.PeroTools.Managers;
 using Assets.Scripts.PeroTools.Nice.Datas;
 using Assets.Scripts.PeroTools.Nice.Interface;
 using MelonLoader;
-using UnityEngine;
+using System.IO;
+using Tomlet;
 using UnhollowerRuntimeLib;
+using UnityEngine;
+using UnityEngine.UI;
 
 namespace QuickSwitchCombination
 {
     public class Main : MelonMod
     {
-        private static int n = 0;
         private static GameObject gameobject { get; set; }
-        private static KeyCode InputKey { get; set; }
+        internal static int ClickIndex { get; set; } = 0;
+        internal static bool SetKey { get; set; } = false;
 
         public override void OnInitializeMelon()
         {
             Save.Load();
             LoggerInstance.Msg("QuickSwitchCombination is loaded!");
+        }
+
+        public override void OnApplicationQuit()
+        {
+            File.WriteAllText(Path.Combine("UserData", "QuickSwitchCombination.cfg"), TomletMain.TomlStringFrom(Save.Settings));
         }
 
         public override void OnSceneWasLoaded(int buildIndex, string sceneName)
@@ -42,41 +49,26 @@ namespace QuickSwitchCombination
                 Event e = Event.current;
                 if (e != null && e.isKey && e.keyCode != KeyCode.None)
                 {
-                    InputKey = e.keyCode;
-                    for (n = 0; n < Save.Settings.datas.Count; n++)
+                    for (int n = 0; n < Save.Settings.datas.Count; n++)
                     {
-                        if (InputKey == Save.Settings.datas[n].Key)
+                        if (e.keyCode == Save.Settings.datas[n].Key)
                         {
-                            SetCombination();
+                            VariableUtils.SetResult(Singleton<DataManager>.instance["Account"]["SelectedRoleIndex"], new Il2CppSystem.Int32() { m_value = Save.Settings.datas[n].Character }.BoxIl2CppObject());
+                            VariableUtils.SetResult(Singleton<DataManager>.instance["Account"]["SelectedElfinIndex"], new Il2CppSystem.Int32() { m_value = Save.Settings.datas[n].Elfin }.BoxIl2CppObject());
                         }
                     }
-                    if (InputKey == Save.Settings.MenuKey)
+                    if (e.keyCode == Save.Settings.MenuKey)
                     {
                         Menu.ShowMenu = !Menu.ShowMenu;
                     }
-                }
-            }
-        }
-
-        private void SetCombination()
-        {
-            for (int i = 0; i < Singleton<ConfigManager>.instance["character"].Count; i++)
-            {
-                if (Save.Settings.datas[n].Character == Singleton<ConfigManager>.instance.GetJson("character", true)[i]["cosName"].ToObject<string>())
-                {
-                    VariableUtils.SetResult(Singleton<DataManager>.instance["Account"]["SelectedRoleIndex"], new Il2CppSystem.Int32() { m_value = i }.BoxIl2CppObject());
-                }
-            }
-
-            for (int i = 0; i < Singleton<ConfigManager>.instance["elfin"].Count; i++)
-            {
-                if (Save.Settings.datas[n].Elfin == Singleton<ConfigManager>.instance.GetJson("elfin", true)[i]["name"].ToObject<string>())
-                {
-                    VariableUtils.SetResult(Singleton<DataManager>.instance["Account"]["SelectedElfinIndex"], new Il2CppSystem.Int32() { m_value = i }.BoxIl2CppObject());
-                }
-                if (Save.Settings.datas[n].Elfin == "")
-                {
-                    VariableUtils.SetResult(Singleton<DataManager>.instance["Account"]["SelectedElfinIndex"], new Il2CppSystem.Int32() { m_value = -1 }.BoxIl2CppObject());
+                    if (SetKey)
+                    {
+                        Data current = Save.Settings.datas[ClickIndex];
+                        current.Key = e.keyCode;
+                        Save.Settings.datas[ClickIndex] = current;
+                        ConstantVariables.ContentTransform.GetChild(ClickIndex).GetChild(2).GetChild(0).gameObject.GetComponent<Text>().text = Save.Settings.datas[ClickIndex].Key.ToString();
+                        SetKey = false;
+                    }
                 }
             }
         }
