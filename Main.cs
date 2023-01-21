@@ -4,71 +4,78 @@ using Assets.Scripts.PeroTools.Nice.Interface;
 using MelonLoader;
 using System.IO;
 using Tomlet;
-using UnhollowerRuntimeLib;
 using UnityEngine;
 using UnityEngine.UI;
+using static QuickSwitchCombination.Save;
+using static UnhollowerRuntimeLib.ClassInjector;
 
-namespace QuickSwitchCombination
+namespace QuickSwitchCombination;
+
+public class Main : MelonMod
 {
-    public class Main : MelonMod
+    private static GameObject gameobject { get; set; }
+    internal static int ClickIndex { get; set; } = 0;
+    internal static bool SetKey { get; set; } = false;
+
+    public override void OnInitializeMelon()
     {
-        private static GameObject gameobject { get; set; }
-        internal static int ClickIndex { get; set; } = 0;
-        internal static bool SetKey { get; set; } = false;
+        Load();
+        RegisterTypeInIl2Cpp<Menu>();
+        RegisterTypeInIl2Cpp<Reload>();
+        RegisterTypeInIl2Cpp<Plus>();
+        RegisterTypeInIl2Cpp<Count>();
+        RegisterTypeInIl2Cpp<Character>();
+        RegisterTypeInIl2Cpp<Elfin>();
+        RegisterTypeInIl2Cpp<Key>();
+        RegisterTypeInIl2Cpp<Select>();
+        LoggerInstance.Msg("QuickSwitchCombination is loaded!");
+    }
 
-        public override void OnApplicationStart()
+    public override void OnApplicationQuit()
+    {
+        File.WriteAllText(Path.Combine("UserData", "QuickSwitchCombination.cfg"), TomletMain.TomlStringFrom(Save.Settings));
+    }
+
+    public override void OnSceneWasLoaded(int buildIndex, string sceneName)
+    {
+        if (sceneName == "UISystem_PC")
         {
-            Save.Load();
-            LoggerInstance.Msg("QuickSwitchCombination is loaded!");
+            gameobject = new GameObject("QuickSwitchCombination");
+            Object.DontDestroyOnLoad(gameobject);
+            gameobject.AddComponent<Menu>();
         }
-
-        public override void OnApplicationQuit()
+        else
         {
-            File.WriteAllText(Path.Combine("UserData", "QuickSwitchCombination.cfg"), TomletMain.TomlStringFrom(Save.Settings));
+            Object.Destroy(gameobject);
         }
+    }
 
-        public override void OnSceneWasLoaded(int buildIndex, string sceneName)
+    public override void OnGUI()
+    {
+        if (Input.anyKeyDown)
         {
-            if (sceneName == "UISystem_PC")
+            Event e = Event.current;
+            if (e != null && e.isKey && e.keyCode != KeyCode.None)
             {
-                ClassInjector.RegisterTypeInIl2Cpp<Menu>();
-                gameobject = new GameObject("QuickSwitchCombination");
-                Object.DontDestroyOnLoad(gameobject);
-                gameobject.AddComponent<Menu>();
-            }
-            else
-            {
-                Object.Destroy(gameobject);
-            }
-        }
-
-        public override void OnGUI()
-        {
-            if (Input.anyKeyDown)
-            {
-                Event e = Event.current;
-                if (e != null && e.isKey && e.keyCode != KeyCode.None)
+                for (int n = 0; n < Settings.datas.Count; n++)
                 {
-                    for (int n = 0; n < Save.Settings.datas.Count; n++)
+                    if (e.keyCode == Settings.datas[n].Key)
                     {
-                        if (e.keyCode == Save.Settings.datas[n].Key)
-                        {
-                            VariableUtils.SetResult(Singleton<DataManager>.instance["Account"]["SelectedRoleIndex"], new Il2CppSystem.Int32() { m_value = Save.Settings.datas[n].Character }.BoxIl2CppObject());
-                            VariableUtils.SetResult(Singleton<DataManager>.instance["Account"]["SelectedElfinIndex"], new Il2CppSystem.Int32() { m_value = Save.Settings.datas[n].Elfin }.BoxIl2CppObject());
-                        }
+                        VariableUtils.SetResult(Singleton<DataManager>.instance["Account"]["SelectedRoleIndex"], new Il2CppSystem.Int32() { m_value = Settings.datas[n].Character }.BoxIl2CppObject());
+                        VariableUtils.SetResult(Singleton<DataManager>.instance["Account"]["SelectedElfinIndex"], new Il2CppSystem.Int32() { m_value = Settings.datas[n].Elfin }.BoxIl2CppObject());
                     }
-                    if (e.keyCode == Save.Settings.MenuKey)
-                    {
-                        Menu.ShowMenu = !Menu.ShowMenu;
-                    }
-                    if (SetKey)
-                    {
-                        Data current = Save.Settings.datas[ClickIndex];
-                        current.Key = e.keyCode;
-                        Save.Settings.datas[ClickIndex] = current;
-                        ConstantVariables.ContentTransform.GetChild(ClickIndex).GetChild(2).GetChild(0).gameObject.GetComponent<Text>().text = Save.Settings.datas[ClickIndex].Key.ToString();
-                        SetKey = false;
-                    }
+                }
+                if (e.keyCode == Settings.MenuKey)
+                {
+                    Menu.ShowMenu = !Menu.ShowMenu;
+                }
+                if (SetKey)
+                {
+                    Data current = Settings.datas[ClickIndex];
+                    current.Key = e.keyCode;
+                    Settings.datas[ClickIndex] = current;
+                    ConstantVariables.ContentTransform.GetChild(ClickIndex).GetChild(2).GetChild(0).gameObject.GetComponent<Text>().text = Settings.datas[ClickIndex].Key.ToString();
+                    SetKey = false;
                 }
             }
         }

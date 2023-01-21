@@ -2,7 +2,7 @@
 
 namespace QuickSwitchCombination
 {
-    internal class ConstantVariables
+    internal static class ConstantVariables
     {
         internal static GameObject MenuPrefab { get; set; }
         internal static GameObject Reload { get; set; }
