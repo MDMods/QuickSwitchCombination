@@ -21,7 +21,7 @@ public class Main : MelonMod
     {
         Load();
         RegisterTypeInIl2Cpp<Menu>();
-        RegisterTypeInIl2Cpp<Reload>();
+        RegisterTypeInIl2Cpp<Minus>();
         RegisterTypeInIl2Cpp<Plus>();
         RegisterTypeInIl2Cpp<Count>();
         RegisterTypeInIl2Cpp<Character>();

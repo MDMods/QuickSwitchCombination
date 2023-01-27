@@ -58,14 +58,14 @@ namespace QuickSwitchCombination
         {
             MenuPrefab = Instantiate(ab.LoadAsset("Assets/Menu Canvas.prefab").Cast<GameObject>());
             MenuPrefab.SetActive(false);
-            ConstantVariables.Reload = MenuPrefab.transform.GetChild(0).FindChild("Reload").gameObject;
+            ConstantVariables.Minus = MenuPrefab.transform.GetChild(0).FindChild("Minus").gameObject;
             ConstantVariables.Plus = MenuPrefab.transform.GetChild(0).FindChild("Plus").gameObject;
             ContentTransform = MenuPrefab.transform.GetChild(0).FindChild("Scroll View").GetChild(0).GetChild(0);
         }
 
         private void SetMenu()
         {
-            ConstantVariables.Reload.AddComponent<Reload>();
+            ConstantVariables.Minus.AddComponent<Minus>();
             ConstantVariables.Plus.AddComponent<Plus>();
 
             for (int i = 0; i < Save.Settings.datas.Count; i++)
@@ -76,7 +76,7 @@ namespace QuickSwitchCombination
 
         internal static void SetCombination(int count)
         {
-            var combination = Instantiate(ab.LoadAsset("Assets/Combination.prefab").Cast<GameObject>(), ConstantVariables.ContentTransform);
+            var combination = Instantiate(ab.LoadAsset("Assets/Combination.prefab").Cast<GameObject>(), ContentTransform);
 
             combination.AddComponent<Count>();
             combination.GetComponent<Count>().count = count;
