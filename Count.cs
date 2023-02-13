@@ -1,14 +1,13 @@
 ﻿using System;
 using UnityEngine;
 
-namespace QuickSwitchCombination
-{
-    internal class Count : MonoBehaviour
-    {
-        public Count(IntPtr intPtr) : base(intPtr)
-        {
-        }
+namespace QuickSwitchCombination;
 
-        public int count;
+internal class Count : MonoBehaviour
+{
+    public int count;
+
+    public Count(IntPtr intPtr) : base(intPtr)
+    {
     }
 }

@@ -1,8 +1,6 @@
-﻿using Assets.Scripts.PeroTools.Commons;
-using Assets.Scripts.PeroTools.Nice.Datas;
-using Assets.Scripts.PeroTools.Nice.Interface;
+﻿using System.IO;
+using Assets.Scripts.Database;
 using MelonLoader;
-using System.IO;
 using Tomlet;
 using UnityEngine;
 using UnityEngine.UI;
@@ -31,9 +29,9 @@ public class Main : MelonMod
         LoggerInstance.Msg("QuickSwitchCombination is loaded!");
     }
 
-    public override void OnApplicationQuit()
+    public override void OnDeinitializeMelon()
     {
-        File.WriteAllText(Path.Combine("UserData", "QuickSwitchCombination.cfg"), TomletMain.TomlStringFrom(Save.Settings));
+        File.WriteAllText(Path.Combine("UserData", "QuickSwitchCombination.cfg"), TomletMain.TomlStringFrom(Settings));
     }
 
     public override void OnSceneWasLoaded(int buildIndex, string sceneName)
@@ -54,24 +52,26 @@ public class Main : MelonMod
     {
         if (Input.anyKeyDown)
         {
-            Event e = Event.current;
+            var e = Event.current;
             if (e != null && e.isKey && e.keyCode != KeyCode.None)
             {
-                for (int n = 0; n < Settings.datas.Count; n++)
+                for (var n = 0; n < Settings.datas.Count; n++)
                 {
                     if (e.keyCode == Settings.datas[n].Key)
                     {
-                        VariableUtils.SetResult(Singleton<DataManager>.instance["Account"]["SelectedRoleIndex"], new Il2CppSystem.Int32() { m_value = Settings.datas[n].Character }.BoxIl2CppObject());
-                        VariableUtils.SetResult(Singleton<DataManager>.instance["Account"]["SelectedElfinIndex"], new Il2CppSystem.Int32() { m_value = Settings.datas[n].Elfin }.BoxIl2CppObject());
+                        DataHelper.selectedRoleIndex = Settings.datas[n].Character;
+                        DataHelper.selectedElfinIndex = Settings.datas[n].Elfin;
                     }
                 }
+
                 if (e.keyCode == Settings.MenuKey)
                 {
                     Menu.ShowMenu = !Menu.ShowMenu;
                 }
+
                 if (SetKey)
                 {
-                    Data current = Settings.datas[ClickIndex];
+                    var current = Settings.datas[ClickIndex];
                     current.Key = e.keyCode;
                     Settings.datas[ClickIndex] = current;
                     ConstantVariables.ContentTransform.GetChild(ClickIndex).GetChild(2).GetChild(0).gameObject.GetComponent<Text>().text = Settings.datas[ClickIndex].Key.ToString();

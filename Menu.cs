@@ -4,91 +4,81 @@ using UnityEngine;
 using UnityEngine.UI;
 using static QuickSwitchCombination.ConstantVariables;
 
-namespace QuickSwitchCombination
+namespace QuickSwitchCombination;
+
+internal class Menu : MonoBehaviour
 {
-    internal class Menu : MonoBehaviour
+    public Menu(IntPtr intPtr) : base(intPtr)
     {
-        internal static AssetBundle ab { get; set; }
-        internal static bool ShowMenu { get; set; } = false;
+    }
 
-        public Menu(IntPtr intPtr) : base(intPtr)
+    internal static AssetBundle ab { get; set; }
+    internal static bool ShowMenu { get; set; } = false;
+
+    private void Start()
+    {
+        if (ab == null)
         {
+            ab = AssetBundle.LoadFromMemory(ReadEmbeddedFile("Menu.bundle"));
+            LoadGameObjects();
+            SetMenu();
         }
-
-        private void Start()
+        else
         {
-            if (ab == null)
-            {
-                ab = AssetBundle.LoadFromMemory(ReadEmbeddedFile("Menu.bundle"));
-                LoadGameObjects();
-                SetMenu();
-            }
-            else
-            {
-                LoadGameObjects();
-                SetMenu();
-            }
+            LoadGameObjects();
+            SetMenu();
         }
+    }
 
-        private void Update()
+    private void Update()
+    {
+        MenuPrefab.SetActive(ShowMenu);
+    }
+
+    private static byte[] ReadEmbeddedFile(string file)
+    {
+        var assembly = Assembly.GetExecutingAssembly();
+        using var stream = assembly.GetManifestResourceStream($"{Assembly.GetExecutingAssembly().GetName().Name}.{file}");
+        var buffer = new byte[stream.Length];
+        stream.Read(buffer, 0, buffer.Length);
+
+        return buffer;
+    }
+
+    private void LoadGameObjects()
+    {
+        MenuPrefab = Instantiate(ab.LoadAsset("Assets/Menu Canvas.prefab").Cast<GameObject>());
+        MenuPrefab.SetActive(false);
+        ConstantVariables.Minus = MenuPrefab.transform.GetChild(0).FindChild("Minus").gameObject;
+        ConstantVariables.Plus = MenuPrefab.transform.GetChild(0).FindChild("Plus").gameObject;
+        ContentTransform = MenuPrefab.transform.GetChild(0).FindChild("Scroll View").GetChild(0).GetChild(0);
+    }
+
+    private void SetMenu()
+    {
+        ConstantVariables.Minus.AddComponent<Minus>();
+        ConstantVariables.Plus.AddComponent<Plus>();
+
+        for (var i = 0; i < Save.Settings.datas.Count; i++)
         {
-            if (ShowMenu)
-            {
-                MenuPrefab.SetActive(true);
-            }
-            else
-            {
-                MenuPrefab.SetActive(false);
-            }
+            SetCombination(i);
         }
+    }
 
-        private static byte[] ReadEmbeddedFile(string file)
-        {
-            var assembly = Assembly.GetExecutingAssembly();
-            byte[] buffer;
-            using (var stream = assembly.GetManifestResourceStream($"{Assembly.GetExecutingAssembly().GetName().Name}.{file}"))
-            {
-                buffer = new byte[stream.Length];
-                stream.Read(buffer, 0, buffer.Length);
-            }
-            return buffer;
-        }
+    internal static void SetCombination(int count)
+    {
+        var combination = Instantiate(ab.LoadAsset("Assets/Combination.prefab").Cast<GameObject>(), ContentTransform);
 
-        private void LoadGameObjects()
-        {
-            MenuPrefab = Instantiate(ab.LoadAsset("Assets/Menu Canvas.prefab").Cast<GameObject>());
-            MenuPrefab.SetActive(false);
-            ConstantVariables.Minus = MenuPrefab.transform.GetChild(0).FindChild("Minus").gameObject;
-            ConstantVariables.Plus = MenuPrefab.transform.GetChild(0).FindChild("Plus").gameObject;
-            ContentTransform = MenuPrefab.transform.GetChild(0).FindChild("Scroll View").GetChild(0).GetChild(0);
-        }
+        combination.AddComponent<Count>();
+        combination.GetComponent<Count>().count = count;
 
-        private void SetMenu()
-        {
-            ConstantVariables.Minus.AddComponent<Minus>();
-            ConstantVariables.Plus.AddComponent<Plus>();
+        combination.transform.GetChild(0).gameObject.AddComponent<Character>();
 
-            for (int i = 0; i < Save.Settings.datas.Count; i++)
-            {
-                SetCombination(i);
-            }
-        }
+        combination.transform.GetChild(1).gameObject.AddComponent<Elfin>();
 
-        internal static void SetCombination(int count)
-        {
-            var combination = Instantiate(ab.LoadAsset("Assets/Combination.prefab").Cast<GameObject>(), ContentTransform);
+        combination.transform.GetChild(2).gameObject.AddComponent<Key>();
+        combination.transform.GetChild(2).GetChild(0).gameObject.GetComponent<Text>().text = Save.Settings.datas[count].Key.ToString();
 
-            combination.AddComponent<Count>();
-            combination.GetComponent<Count>().count = count;
-
-            combination.transform.GetChild(0).gameObject.AddComponent<Character>();
-
-            combination.transform.GetChild(1).gameObject.AddComponent<Elfin>();
-
-            combination.transform.GetChild(2).gameObject.AddComponent<Key>();
-            combination.transform.GetChild(2).GetChild(0).gameObject.GetComponent<Text>().text = Save.Settings.datas[count].Key.ToString();
-
-            combination.transform.GetChild(3).gameObject.AddComponent<Select>();
-        }
+        combination.transform.GetChild(3).gameObject.AddComponent<Select>();
     }
 }

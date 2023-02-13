@@ -7,7 +7,8 @@ using UnityEngine;
 namespace System.Runtime.CompilerServices
 {
     internal static class IsExternalInit
-    { }
+    {
+    }
 }
 
 namespace QuickSwitchCombination
@@ -51,17 +52,18 @@ namespace QuickSwitchCombination
 
     public static class Save
     {
-        private static Config DefaultConfig = new();
+        private static readonly Config DefaultConfig = new();
         internal static Config Settings { get; set; }
 
         internal static void Load()
         {
             if (!File.Exists(Path.Combine("UserData", "QuickSwitchCombination.cfg")))
             {
-                string defaultConfig = TomletMain.TomlStringFrom(DefaultConfig);
+                var defaultConfig = TomletMain.TomlStringFrom(DefaultConfig);
                 File.WriteAllText(Path.Combine("UserData", "QuickSwitchCombination.cfg"), defaultConfig);
             }
-            string Configs = File.ReadAllText(Path.Combine("UserData", "QuickSwitchCombination.cfg"));
+
+            var Configs = File.ReadAllText(Path.Combine("UserData", "QuickSwitchCombination.cfg"));
             Settings = TomletMain.To<Config>(Configs);
         }
     }
