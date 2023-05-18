@@ -2,6 +2,7 @@
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
+using static QuickSwitchCombination.Main;
 
 namespace QuickSwitchCombination;
 
@@ -18,7 +19,7 @@ internal class Key : MonoBehaviour
 
     private void OnClick()
     {
-        Main.SetKey = true;
-        Main.ClickIndex = transform.parent.gameObject.GetComponent<Count>().count;
+        SetKey = true;
+        ClickIndex = transform.parent.gameObject.GetComponent<Count>().count;
     }
 }

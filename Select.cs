@@ -22,7 +22,7 @@ internal class Select : MonoBehaviour
 
     private void OnClick()
     {
-        DataHelper.selectedRoleIndex = Save.Settings.datas[count].Character;
-        DataHelper.selectedElfinIndex = Save.Settings.datas[count].Elfin;
+        DataHelper.selectedRoleIndex = Save.Settings.Data[count].Character;
+        DataHelper.selectedElfinIndex = Save.Settings.Data[count].Elfin;
     }
 }

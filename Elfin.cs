@@ -10,7 +10,7 @@ namespace QuickSwitchCombination;
 
 internal class Elfin : MonoBehaviour
 {
-    private int count;
+    private int _count;
 
     public Elfin(IntPtr intPtr) : base(intPtr)
     {
@@ -18,7 +18,7 @@ internal class Elfin : MonoBehaviour
 
     private void Start()
     {
-        count = transform.parent.gameObject.GetComponent<Count>().count;
+        _count = transform.parent.gameObject.GetComponent<Count>().count;
         var dropdown = GetComponent<Dropdown>();
         dropdown.ClearOptions();
 
@@ -31,14 +31,9 @@ internal class Elfin : MonoBehaviour
 
         dropdown.AddOptions(elfins);
 
-        dropdown.value = Save.Settings.datas[count].Elfin + 1;
+        dropdown.value = Save.Settings.Data[_count].Elfin + 1;
         dropdown.onValueChanged.AddListener((UnityAction<int>)OnValueChanged);
     }
 
-    private void OnValueChanged(int index)
-    {
-        var Data = Save.Settings.datas[count];
-        Data.Elfin = index - 1;
-        Save.Settings.datas[count] = Data;
-    }
+    private void OnValueChanged(int index) => Save.Settings.Data[_count].Elfin = index - 1;
 }

@@ -10,7 +10,7 @@ namespace QuickSwitchCombination;
 
 internal class Character : MonoBehaviour
 {
-    private int count;
+    private int _count;
 
     public Character(IntPtr intPtr) : base(intPtr)
     {
@@ -18,7 +18,7 @@ internal class Character : MonoBehaviour
 
     private void Start()
     {
-        count = transform.parent.gameObject.GetComponent<Count>().count;
+        _count = transform.parent.gameObject.GetComponent<Count>().count;
         var dropdown = GetComponent<Dropdown>();
         dropdown.ClearOptions();
 
@@ -30,14 +30,9 @@ internal class Character : MonoBehaviour
 
         dropdown.AddOptions(characters);
 
-        dropdown.value = Save.Settings.datas[count].Character;
+        dropdown.value = Save.Settings.Data[_count].Character;
         dropdown.onValueChanged.AddListener((UnityAction<int>)OnValueChanged);
     }
 
-    private void OnValueChanged(int index)
-    {
-        var Data = Save.Settings.datas[count];
-        Data.Character = index;
-        Save.Settings.datas[count] = Data;
-    }
+    private void OnValueChanged(int index) => Save.Settings.Data[_count].Character = index;
 }

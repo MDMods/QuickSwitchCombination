@@ -12,14 +12,14 @@ internal class Menu : MonoBehaviour
     {
     }
 
-    internal static AssetBundle ab { get; set; }
+    private static AssetBundle Ab { get; set; }
     internal static bool ShowMenu { get; set; } = false;
 
     private void Start()
     {
-        if (ab == null)
+        if (Ab == null)
         {
-            ab = AssetBundle.LoadFromMemory(ReadEmbeddedFile("Menu.bundle"));
+            Ab = AssetBundle.LoadFromMemory(ReadEmbeddedFile("Menu.bundle"));
             LoadGameObjects();
             SetMenu();
         }
@@ -39,15 +39,15 @@ internal class Menu : MonoBehaviour
     {
         var assembly = Assembly.GetExecutingAssembly();
         using var stream = assembly.GetManifestResourceStream($"{Assembly.GetExecutingAssembly().GetName().Name}.{file}");
-        var buffer = new byte[stream.Length];
+        var buffer = new byte[stream!.Length];
         stream.Read(buffer, 0, buffer.Length);
 
         return buffer;
     }
 
-    private void LoadGameObjects()
+    private static void LoadGameObjects()
     {
-        MenuPrefab = Instantiate(ab.LoadAsset("Assets/Menu Canvas.prefab").Cast<GameObject>());
+        MenuPrefab = Instantiate(Ab.LoadAsset("Assets/Menu Canvas.prefab").Cast<GameObject>());
         MenuPrefab.SetActive(false);
         ConstantVariables.Minus = MenuPrefab.transform.GetChild(0).FindChild("Minus").gameObject;
         ConstantVariables.Plus = MenuPrefab.transform.GetChild(0).FindChild("Plus").gameObject;
@@ -59,7 +59,7 @@ internal class Menu : MonoBehaviour
         ConstantVariables.Minus.AddComponent<Minus>();
         ConstantVariables.Plus.AddComponent<Plus>();
 
-        for (var i = 0; i < Save.Settings.datas.Count; i++)
+        for (var i = 0; i < Save.Settings.Data.Count; i++)
         {
             SetCombination(i);
         }
@@ -67,7 +67,7 @@ internal class Menu : MonoBehaviour
 
     internal static void SetCombination(int count)
     {
-        var combination = Instantiate(ab.LoadAsset("Assets/Combination.prefab").Cast<GameObject>(), ContentTransform);
+        var combination = Instantiate(Ab.LoadAsset("Assets/Combination.prefab").Cast<GameObject>(), ContentTransform);
 
         combination.AddComponent<Count>();
         combination.GetComponent<Count>().count = count;
@@ -77,7 +77,7 @@ internal class Menu : MonoBehaviour
         combination.transform.GetChild(1).gameObject.AddComponent<Elfin>();
 
         combination.transform.GetChild(2).gameObject.AddComponent<Key>();
-        combination.transform.GetChild(2).GetChild(0).gameObject.GetComponent<Text>().text = Save.Settings.datas[count].Key.ToString();
+        combination.transform.GetChild(2).GetChild(0).gameObject.GetComponent<Text>().text = Save.Settings.Data[count].Key.ToString();
 
         combination.transform.GetChild(3).gameObject.AddComponent<Select>();
     }

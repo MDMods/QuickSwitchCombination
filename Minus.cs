@@ -20,6 +20,6 @@ internal class Minus : MonoBehaviour
     private void OnClick()
     {
         Destroy(ContentTransform.GetChild(ContentTransform.childCount - 1).gameObject);
-        Save.Settings.datas.RemoveAt(Save.Settings.datas.Count - 1);
+        Save.Settings.Data.RemoveAt(Save.Settings.Data.Count - 1);
     }
 }

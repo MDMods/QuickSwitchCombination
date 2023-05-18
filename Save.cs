@@ -4,67 +4,57 @@ using Tomlet;
 using Tomlet.Attributes;
 using UnityEngine;
 
-namespace System.Runtime.CompilerServices
+namespace QuickSwitchCombination;
+
+public class Data
 {
-    internal static class IsExternalInit
+    [TomlPrecedingComment("The character index")]
+    internal int Character;
+
+    [TomlPrecedingComment("The elfin index")]
+    internal int Elfin;
+
+    [TomlPrecedingComment("The shortcut key for switching character")]
+    internal KeyCode Key;
+
+    // For toml deserialization
+    public Data()
+    {
+    }
+
+    public Data(int character, int elfin, KeyCode key)
+    {
+        Character = character;
+        Elfin = elfin;
+        Key = key;
+    }
+}
+
+public struct Config
+{
+    [TomlPrecedingComment("Menu for adding settings")]
+    internal KeyCode MenuKey { get; set; } = KeyCode.F11;
+
+    internal List<Data> Data { get; set; } = new() { new Data(11, 7, KeyCode.F12) };
+
+    public Config()
     {
     }
 }
 
-namespace QuickSwitchCombination
+public static class Save
 {
-    public struct Data
+    internal static Config Settings { get; private set; }
+
+    internal static void Load()
     {
-        [TomlPrecedingComment("The shortcut key for switching character")]
-        internal KeyCode Key;
-
-        [TomlPrecedingComment("The character index")]
-        internal int Character;
-
-        [TomlPrecedingComment("The elfin index")]
-        internal int Elfin;
-
-        public Data(KeyCode key, int character, int elfin)
+        if (!File.Exists(Path.Combine("UserData", "QuickSwitchCombination.cfg")))
         {
-            Key = key;
-            Character = character;
-            Elfin = elfin;
-        }
-    }
-
-    public struct Config
-    {
-        [TomlPrecedingComment("Menu for adding settings")]
-        internal KeyCode MenuKey = KeyCode.F11;
-
-        internal List<Data> datas { get; init; } = new() { new Data(KeyCode.F12, 11, 7) };
-
-        public Config()
-        {
+            var defaultConfig = TomletMain.TomlStringFrom(new Config());
+            File.WriteAllText(Path.Combine("UserData", "QuickSwitchCombination.cfg"), defaultConfig);
         }
 
-        public Config(KeyCode menukey, List<Data> data)
-        {
-            MenuKey = menukey;
-            datas = data;
-        }
-    }
-
-    public static class Save
-    {
-        private static readonly Config DefaultConfig = new();
-        internal static Config Settings { get; set; }
-
-        internal static void Load()
-        {
-            if (!File.Exists(Path.Combine("UserData", "QuickSwitchCombination.cfg")))
-            {
-                var defaultConfig = TomletMain.TomlStringFrom(DefaultConfig);
-                File.WriteAllText(Path.Combine("UserData", "QuickSwitchCombination.cfg"), defaultConfig);
-            }
-
-            var Configs = File.ReadAllText(Path.Combine("UserData", "QuickSwitchCombination.cfg"));
-            Settings = TomletMain.To<Config>(Configs);
-        }
+        var configs = File.ReadAllText(Path.Combine("UserData", "QuickSwitchCombination.cfg"));
+        Settings = TomletMain.To<Config>(configs);
     }
 }

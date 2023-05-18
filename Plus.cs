@@ -18,7 +18,7 @@ internal class Plus : MonoBehaviour
 
     private void OnClick()
     {
-        Save.Settings.datas.Add(new Data(KeyCode.None, 0, -1));
-        Menu.SetCombination(Save.Settings.datas.Count - 1);
+        Save.Settings.Data.Add(new Data(0, -1, KeyCode.None));
+        Menu.SetCombination(Save.Settings.Data.Count - 1);
     }
 }
