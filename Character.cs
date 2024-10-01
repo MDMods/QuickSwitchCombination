@@ -1,13 +1,15 @@
 ﻿using System;
-using Assets.Scripts.PeroTools.Commons;
-using Assets.Scripts.PeroTools.Managers;
+using Il2CppAssets.Scripts.PeroTools.Commons;
+using Il2CppAssets.Scripts.PeroTools.Managers;
 using Il2CppSystem.Collections.Generic;
+using MelonLoader;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
 
 namespace QuickSwitchCombination;
 
+[RegisterTypeInIl2Cpp]
 internal class Character : MonoBehaviour
 {
     private int _count;

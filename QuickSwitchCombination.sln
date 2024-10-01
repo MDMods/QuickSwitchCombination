@@ -1,9 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.1.32414.318
+VisualStudioVersion = 17.4.33205.214
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QuickSwitchCombination", "QuickSwitchCombination.csproj", "{B9D9FAC6-370E-41B4-AFAD-EAFC3897A1C4}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QuickSwitchCombination", "QuickSwitchCombination.csproj", "{AA01F9C5-301D-4996-AF4C-B765C4A68394}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -11,15 +11,15 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{B9D9FAC6-370E-41B4-AFAD-EAFC3897A1C4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{B9D9FAC6-370E-41B4-AFAD-EAFC3897A1C4}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{B9D9FAC6-370E-41B4-AFAD-EAFC3897A1C4}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{B9D9FAC6-370E-41B4-AFAD-EAFC3897A1C4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AA01F9C5-301D-4996-AF4C-B765C4A68394}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AA01F9C5-301D-4996-AF4C-B765C4A68394}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AA01F9C5-301D-4996-AF4C-B765C4A68394}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AA01F9C5-301D-4996-AF4C-B765C4A68394}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {A8FB8C0E-01AD-4752-AC6B-4D75866D7532}
+		SolutionGuid = {FBE6746D-A27B-4B2A-BE47-2D0A2DB6A06B}
 	EndGlobalSection
 EndGlobal

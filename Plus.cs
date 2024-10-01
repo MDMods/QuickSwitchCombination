@@ -1,10 +1,12 @@
 ﻿using System;
+using MelonLoader;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
 
 namespace QuickSwitchCombination;
 
+[RegisterTypeInIl2Cpp]
 internal class Plus : MonoBehaviour
 {
     public Plus(IntPtr intPtr) : base(intPtr)

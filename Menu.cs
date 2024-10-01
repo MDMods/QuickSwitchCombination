@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Reflection;
+using MelonLoader;
 using UnityEngine;
 using UnityEngine.UI;
 using static QuickSwitchCombination.ConstantVariables;
 
 namespace QuickSwitchCombination;
 
+[RegisterTypeInIl2Cpp]
 internal class Menu : MonoBehaviour
 {
     public Menu(IntPtr intPtr) : base(intPtr)
@@ -20,14 +22,10 @@ internal class Menu : MonoBehaviour
         if (Ab == null)
         {
             Ab = AssetBundle.LoadFromMemory(ReadEmbeddedFile("Menu.bundle"));
-            LoadGameObjects();
-            SetMenu();
         }
-        else
-        {
-            LoadGameObjects();
-            SetMenu();
-        }
+
+        LoadGameObjects();
+        SetMenu();
     }
 
     private void Update()
@@ -54,7 +52,7 @@ internal class Menu : MonoBehaviour
         ContentTransform = MenuPrefab.transform.GetChild(0).FindChild("Scroll View").GetChild(0).GetChild(0);
     }
 
-    private void SetMenu()
+    private static void SetMenu()
     {
         ConstantVariables.Minus.AddComponent<Minus>();
         ConstantVariables.Plus.AddComponent<Plus>();

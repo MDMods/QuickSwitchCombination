@@ -1,4 +1,5 @@
 ﻿using System;
+using MelonLoader;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
@@ -6,6 +7,7 @@ using static QuickSwitchCombination.ConstantVariables;
 
 namespace QuickSwitchCombination;
 
+[RegisterTypeInIl2Cpp]
 internal class Minus : MonoBehaviour
 {
     public Minus(IntPtr intPtr) : base(intPtr)

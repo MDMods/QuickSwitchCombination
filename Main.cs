@@ -1,16 +1,15 @@
 ﻿using System.IO;
 using System.Linq;
-using Assets.Scripts.Database;
+using Il2CppAssets.Scripts.Database;
 using MelonLoader;
 using Tomlet;
 using UnityEngine;
 using UnityEngine.UI;
 using static QuickSwitchCombination.Save;
-using static UnhollowerRuntimeLib.ClassInjector;
 
 namespace QuickSwitchCombination;
 
-public class Main : MelonMod
+internal class Main : MelonMod
 {
     private static GameObject GameObject { get; set; }
     internal static int ClickIndex { get; set; } = 0;
@@ -19,14 +18,6 @@ public class Main : MelonMod
     public override void OnInitializeMelon()
     {
         Load();
-        RegisterTypeInIl2Cpp<Menu>();
-        RegisterTypeInIl2Cpp<Minus>();
-        RegisterTypeInIl2Cpp<Plus>();
-        RegisterTypeInIl2Cpp<Count>();
-        RegisterTypeInIl2Cpp<Character>();
-        RegisterTypeInIl2Cpp<Elfin>();
-        RegisterTypeInIl2Cpp<Key>();
-        RegisterTypeInIl2Cpp<Select>();
         LoggerInstance.Msg("QuickSwitchCombination is loaded!");
     }
 
@@ -51,29 +42,39 @@ public class Main : MelonMod
 
     public override void OnGUI()
     {
-        if (!Input.anyKeyDown) return;
-        var e = Event.current;
-        if (e.isKey && e.keyCode != KeyCode.None)
+        if (!Input.anyKeyDown)
         {
-            if (e.keyCode == Settings.MenuKey)
-            {
-                Menu.ShowMenu = !Menu.ShowMenu;
-                return;
-            }
-
-            if (SetKey)
-            {
-                Settings.Data[ClickIndex].Key = e.keyCode;
-                ConstantVariables.ContentTransform.GetChild(ClickIndex).GetChild(2).GetChild(0).gameObject.GetComponent<Text>().text =
-                    Settings.Data[ClickIndex].Key.ToString();
-                SetKey = false;
-                return;
-            }
-
-            var combination = Settings.Data.FirstOrDefault(x => x.Key == e.keyCode);
-            if (combination is null) return;
-            DataHelper.selectedRoleIndex = combination.Character;
-            DataHelper.selectedElfinIndex = combination.Elfin;
+            return;
         }
+
+        var e = Event.current;
+        if (!e.isKey || e.keyCode == KeyCode.None)
+        {
+            return;
+        }
+
+        if (e.keyCode == Settings.MenuKey)
+        {
+            Menu.ShowMenu = !Menu.ShowMenu;
+            return;
+        }
+
+        if (SetKey)
+        {
+            Settings.Data[ClickIndex].Key = e.keyCode;
+            ConstantVariables.ContentTransform.GetChild(ClickIndex).GetChild(2).GetChild(0).gameObject.GetComponent<Text>().text =
+                Settings.Data[ClickIndex].Key.ToString();
+            SetKey = false;
+            return;
+        }
+
+        var combination = Settings.Data.FirstOrDefault(x => x.Key == e.keyCode);
+        if (combination is null)
+        {
+            return;
+        }
+
+        DataHelper.selectedRoleIndex = combination.Character;
+        DataHelper.selectedElfinIndex = combination.Elfin;
     }
 }

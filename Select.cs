@@ -1,14 +1,16 @@
 ﻿using System;
-using Assets.Scripts.Database;
+using Il2CppAssets.Scripts.Database;
+using MelonLoader;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
 
 namespace QuickSwitchCombination;
 
+[RegisterTypeInIl2Cpp]
 internal class Select : MonoBehaviour
 {
-    private int count;
+    private int _count;
 
     public Select(IntPtr intPtr) : base(intPtr)
     {
@@ -16,13 +18,13 @@ internal class Select : MonoBehaviour
 
     private void Start()
     {
-        count = transform.parent.gameObject.GetComponent<Count>().count;
+        _count = transform.parent.gameObject.GetComponent<Count>().count;
         GetComponent<Button>().onClick.AddListener((UnityAction)OnClick);
     }
 
     private void OnClick()
     {
-        DataHelper.selectedRoleIndex = Save.Settings.Data[count].Character;
-        DataHelper.selectedElfinIndex = Save.Settings.Data[count].Elfin;
+        DataHelper.selectedRoleIndex = Save.Settings.Data[_count].Character;
+        DataHelper.selectedElfinIndex = Save.Settings.Data[_count].Elfin;
     }
 }
