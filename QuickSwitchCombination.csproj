@@ -78,4 +78,9 @@
         <EmbeddedResource Include="Menu.bundle"/>
     </ItemGroup>
 
+    <Target Name="Copy" AfterTargets="Build" Condition="'$(MD_DIRECTORY)' != ''">
+        <Copy SourceFiles="$(OutputPath)$(AssemblyName).dll" DestinationFolder="$(MD_DIRECTORY)/Mods/" Condition="'$(Configuration)' == 'Debug'"/>
+        <Message Text="Copied DLL -&gt; $(MD_DIRECTORY)\Mods\$(AssemblyName).dll" Importance="High"/>
+    </Target>
+
 </Project>
