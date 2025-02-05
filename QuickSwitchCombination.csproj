@@ -4,6 +4,10 @@
         <TargetFramework>net6.0</TargetFramework>
         <ImplicitUsings>false</ImplicitUsings>
         <Nullable>disable</Nullable>
+        <GameFolder Condition="Exists('$(MD_DIRECTORY)')">$(MD_DIRECTORY)</GameFolder>
+        <MelonLoader>$(GameFolder)\MelonLoader\</MelonLoader>
+        <MelonNET6>$(MelonLoader)\net6\</MelonNET6>
+        <MelonAssemblies>$(MelonLoader)\Il2CppAssemblies\</MelonAssemblies>
     </PropertyGroup>
 
     <ItemGroup>
@@ -16,55 +20,55 @@
 
     <ItemGroup>
         <Reference Include="Assembly-CSharp">
-            <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Muse Dash\MelonLoader\Il2CppAssemblies\Assembly-CSharp.dll</HintPath>
+            <HintPath>$(MelonAssemblies)\Assembly-CSharp.dll</HintPath>
             <Private>False</Private>
         </Reference>
         <Reference Include="Il2CppInterop.Runtime">
-            <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Muse Dash\MelonLoader\net6\Il2CppInterop.Runtime.dll</HintPath>
+            <HintPath>$(MelonNET6)\Il2CppInterop.Runtime.dll</HintPath>
             <Private>False</Private>
         </Reference>
         <Reference Include="Il2Cppmscorlib">
-            <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Muse Dash\MelonLoader\Il2CppAssemblies\Il2Cppmscorlib.dll</HintPath>
+            <HintPath>$(MelonAssemblies)\Il2Cppmscorlib.dll</HintPath>
             <Private>False</Private>
         </Reference>
         <Reference Include="Il2CppNewtonsoft.Json">
-            <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Muse Dash\MelonLoader\Il2CppAssemblies\Il2CppNewtonsoft.Json.dll</HintPath>
+            <HintPath>$(MelonAssemblies)\Il2CppNewtonsoft.Json.dll</HintPath>
             <Private>False</Private>
         </Reference>
         <Reference Include="Il2CppSirenix.Serialization">
-            <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Muse Dash\MelonLoader\Il2CppAssemblies\Il2CppSirenix.Serialization.dll</HintPath>
+            <HintPath>$(MelonAssemblies)\Il2CppSirenix.Serialization.dll</HintPath>
             <Private>False</Private>
         </Reference>
         <Reference Include="Tomlet">
-            <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Muse Dash\MelonLoader\net6\Tomlet.dll</HintPath>
+            <HintPath>$(MelonNet6)\Tomlet.dll</HintPath>
             <Private>False</Private>
         </Reference>
         <Reference Include="UnityEngine.AssetBundleModule">
-            <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Muse Dash\MelonLoader\Il2CppAssemblies\UnityEngine.AssetBundleModule.dll</HintPath>
+            <HintPath>$(MelonAssemblies)\UnityEngine.AssetBundleModule.dll</HintPath>
             <Private>False</Private>
         </Reference>
         <Reference Include="UnityEngine.CoreModule">
-            <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Muse Dash\MelonLoader\Il2CppAssemblies\UnityEngine.CoreModule.dll</HintPath>
+            <HintPath>$(MelonAssemblies)\UnityEngine.CoreModule.dll</HintPath>
             <Private>False</Private>
         </Reference>
         <Reference Include="UnityEngine.IMGUIModule">
-            <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Muse Dash\MelonLoader\Il2CppAssemblies\UnityEngine.IMGUIModule.dll</HintPath>
+            <HintPath>$(MelonAssemblies)\UnityEngine.IMGUIModule.dll</HintPath>
             <Private>False</Private>
         </Reference>
         <Reference Include="UnityEngine.InputLegacyModule">
-            <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Muse Dash\MelonLoader\Il2CppAssemblies\UnityEngine.InputLegacyModule.dll</HintPath>
+            <HintPath>$(MelonAssemblies)\UnityEngine.InputLegacyModule.dll</HintPath>
             <Private>False</Private>
         </Reference>
         <Reference Include="UnityEngine.TextRenderingModule">
-            <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Muse Dash\MelonLoader\Il2CppAssemblies\UnityEngine.TextRenderingModule.dll</HintPath>
+            <HintPath>$(MelonAssemblies)\UnityEngine.TextRenderingModule.dll</HintPath>
             <Private>False</Private>
         </Reference>
         <Reference Include="UnityEngine.UI">
-            <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Muse Dash\MelonLoader\Il2CppAssemblies\UnityEngine.UI.dll</HintPath>
+            <HintPath>$(MelonAssemblies)\UnityEngine.UI.dll</HintPath>
             <Private>False</Private>
         </Reference>
         <Reference Include="UnityEngine.UIModule">
-            <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Muse Dash\MelonLoader\Il2CppAssemblies\UnityEngine.UIModule.dll</HintPath>
+            <HintPath>$(MelonAssemblies)\UnityEngine.UIModule.dll</HintPath>
             <Private>False</Private>
         </Reference>
     </ItemGroup>
